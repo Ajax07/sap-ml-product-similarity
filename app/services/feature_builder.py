@@ -3,14 +3,14 @@ import pandas as pd
 
 from sklearn.preprocessing import (
     StandardScaler,
-    OneHotEncoder
+    LabelEncoder
 )
-from scipy.sparse import hstack
 
 
 class FeatureBuilder:
     """
-    Builds structured features.
+    Builds lightweight structured
+    features for similarity.
     """
 
     def __init__(self):
@@ -19,10 +19,12 @@ class FeatureBuilder:
             StandardScaler()
         )
 
-        self.encoder = (
-            OneHotEncoder(
-                handle_unknown="ignore"
-            )
+        self.brand_encoder = (
+            LabelEncoder()
+        )
+
+        self.colour_encoder = (
+            LabelEncoder()
         )
 
     def build_structured_features(
@@ -30,18 +32,11 @@ class FeatureBuilder:
         df: pd.DataFrame
     ) -> np.ndarray:
 
+        # Numeric features
         numeric_cols = [
             "sales_price",
             "rating",
             "weight_cleaned"
-        ]
-
-        categorical_cols = [
-            "brand",
-            "colour",
-            "delivery_type",
-            "amazon_prime__y_or_n",
-            "best_seller_tag__y_or_n",
         ]
 
         numeric_features = (
@@ -50,18 +45,55 @@ class FeatureBuilder:
             )
         )
 
-        categorical_features = (
-            self.encoder.fit_transform(
-                df[categorical_cols]
+        # Encode categorical features
+        brand_encoded = (
+            self.brand_encoder
+            .fit_transform(
+                df["brand"]
             )
+            .reshape(-1, 1)
         )
 
-        structured_features = hstack([
-            numeric_features,
-            categorical_features
-        ])
+        colour_encoded = (
+            self.colour_encoder
+            .fit_transform(
+                df["colour"]
+            )
+            .reshape(-1, 1)
+        )
 
-        return (
-            structured_features
-            .toarray()
+        prime_encoded = (
+            (
+                df[
+                    "amazon_prime__y_or_n"
+                ] == "Y"
+            )
+            .astype(int)
+            .values
+            .reshape(-1, 1)
+        )
+
+        bestseller_encoded = (
+            (
+                df[
+                    "best_seller_tag__y_or_n"
+                ] == "Y"
+            )
+            .astype(int)
+            .values
+            .reshape(-1, 1)
+        )
+
+        structured_features = (
+            np.hstack([
+                numeric_features,
+                brand_encoded,
+                colour_encoded,
+                prime_encoded,
+                bestseller_encoded
+            ])
+        )
+
+        return structured_features.astype(
+            np.float32
         )
