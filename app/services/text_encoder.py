@@ -1,6 +1,4 @@
-from sentence_transformers import (
-    SentenceTransformer
-)
+from sentence_transformers import SentenceTransformer
 from loguru import logger
 import numpy as np
 
@@ -11,36 +9,18 @@ class TextEncoder:
     using sentence embeddings.
     """
 
-    def __init__(
-        self,
-        model_name: str = (
-            "sentence-transformers/"
-            "all-MiniLM-L6-v2"
-        )
-    ):
+    def __init__(self, model_name: str = ("sentence-transformers/" "all-MiniLM-L6-v2")):
 
-        logger.info(
-            f"Loading model: {model_name}"
-        )
+        logger.info(f"Loading model: {model_name}")
 
-        self.model = SentenceTransformer(
-            model_name
-        )
+        self.model = SentenceTransformer(model_name)
 
-    def encode(
-        self,
-        texts: list[str]
-    ) -> np.ndarray:
+    def encode(self, texts: list[str]) -> np.ndarray:
 
-        logger.info(
-            f"Encoding {len(texts)} products"
-        )
+        logger.info(f"Encoding {len(texts)} products")
 
         embeddings = self.model.encode(
-            texts,
-            batch_size=64,
-            show_progress_bar=True,
-            convert_to_numpy=True
+            texts, batch_size=64, show_progress_bar=True, convert_to_numpy=True
         )
 
         return embeddings

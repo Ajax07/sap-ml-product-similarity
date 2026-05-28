@@ -13,70 +13,29 @@ class FaissIndex:
 
         self.index = None
 
-    def build_index(
-        self,
-        embeddings: np.ndarray
-    ):
+    def build_index(self, embeddings: np.ndarray):
 
-        logger.info(
-            "Building FAISS index"
-        )
+        logger.info("Building FAISS index")
 
-        embeddings = (
-            embeddings.astype(
-                "float32"
-            )
-        )
+        embeddings = embeddings.astype("float32")
 
         # Normalize for cosine similarity
-        faiss.normalize_L2(
-            embeddings
-        )
+        faiss.normalize_L2(embeddings)
 
-        dimension = (
-            embeddings.shape[1]
-        )
+        dimension = embeddings.shape[1]
 
-        self.index = (
-            faiss.IndexFlatIP(
-                dimension
-            )
-        )
+        self.index = faiss.IndexFlatIP(dimension)
 
-        self.index.add(
-            embeddings
-        )
+        self.index.add(embeddings)
 
-        logger.info(
-            f"Indexed "
-            f"{len(embeddings)} "
-            f"products"
-        )
+        logger.info(f"Indexed " f"{len(embeddings)} " f"products")
 
-    def search(
-        self,
-        query_vector: np.ndarray,
-        k: int = 5
-    ):
+    def search(self, query_vector: np.ndarray, k: int = 5):
 
-        query_vector = (
-            query_vector
-            .astype("float32")
-            .reshape(1, -1)
-        )
+        query_vector = query_vector.astype("float32").reshape(1, -1)
 
-        faiss.normalize_L2(
-            query_vector
-        )
+        faiss.normalize_L2(query_vector)
 
-        scores, indices = (
-            self.index.search(
-                query_vector,
-                k
-            )
-        )
+        scores, indices = self.index.search(query_vector, k)
 
-        return (
-            scores[0],
-            indices[0]
-        )
+        return (scores[0], indices[0])

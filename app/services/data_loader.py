@@ -14,21 +14,12 @@ class DataLoader:
         """Load LDJSON dataset."""
 
         if not self.data_path.exists():
-            raise FileNotFoundError(
-                f"Dataset not found at {self.data_path}"
-            )
+            raise FileNotFoundError(f"Dataset not found at {self.data_path}")
 
-        logger.info(
-            f"Loading dataset from {self.data_path}"
-        )
+        logger.info(f"Loading dataset from {self.data_path}")
 
-        df = pd.read_json(
-            self.data_path,
-            lines=True
-        )
+        df = pd.read_json(self.data_path, lines=True)
 
-        logger.info(
-            f"Loaded dataset with shape: {df.shape}"
-        )
+        logger.info(f"Loaded dataset with shape: {df.shape}")
 
         return df
