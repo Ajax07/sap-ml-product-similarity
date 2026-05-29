@@ -235,6 +235,40 @@ Benefits:
 This optimization makes the system more suitable for deployment scenarios.
 
 ---
+## Important Note on Design Decisions, Tradeoffs & Evaluation
+
+The retrieval system combines **semantic text embeddings** with **structured product metadata** to identify similar fashion products.
+
+### Retrieval Strategy
+
+Transformer-based semantic embeddings (`all-MiniLM-L6-v2`) act as the primary retrieval signal, while structured attributes such as **brand, colour, price, rating, and weight** are used to refine ranking quality.
+
+Given the catalog size (~30K products), **cosine similarity** provided sufficiently fast retrieval performance while maintaining deployment simplicity and reproducibility. The architecture remains extensible toward scalable vector search solutions such as **FAISS, HNSW, or vector databases** for larger production deployments.
+
+To maintain efficient inference and deployment scalability, lightweight structured feature representations were adopted for high-cardinality metadata.
+
+### Multimodal Extension
+
+As an optional enhancement, a multimodal similarity prototype was explored using **CNN-based image embeddings (ResNet18)** combined with semantic text similarity through weighted feature fusion.
+
+This improved visual consistency among retrieved fashion products while maintaining semantic relevance.
+
+### Evaluation Strategy
+
+Since labeled ground-truth similarity pairs were unavailable, retrieval quality was evaluated using proxy ranking metrics and qualitative inspection.
+
+Key evaluation signals included:
+
+* **Category Consistency** → relevance across fashion categories
+* **Brand Consistency** → similarity among product brands
+* **Price Relevance** → reasonable pricing similarity
+* **Cosine Similarity** → semantic embedding alignment
+* **Visual Consistency** → improved apparel similarity with multimodal retrieval
+
+Overall, the system demonstrated **strong semantic retrieval quality, visually improved multimodal recommendations, low-latency inference, and stable deployment behavior**.
+
+
+---
 
 # API Service
 
@@ -433,5 +467,5 @@ Potential future enhancements include:
 
 # Author
 
-Ajay Singh
+Ajay Singh Chouhan
 
