@@ -77,43 +77,8 @@ The pipeline consists of:
 
 # System Architecture
 
-```text
-                    ┌──────────────────┐
-                    │ Fashion Dataset  │
-                    └─────────┬────────┘
-                              │
-                       Data Loading
-                              │
-                    ┌─────────▼─────────┐
-                    │ Preprocessing     │
-                    │ - missing values  │
-                    │ - weight cleaning │
-                    │ - metadata clean  │
-                    └─────────┬─────────┘
-                              │
-          ┌───────────────────┴───────────────────┐
-          │                                       │
-┌─────────▼──────────┐                 ┌──────────▼──────────┐
-│ Text Embeddings    │                 │ Structured Features │
-│ SentenceTransformer│                 │ price/rating/brand │
-└─────────┬──────────┘                 └──────────┬──────────┘
-          └───────────────────┬───────────────────┘
-                              │
-                     Feature Fusion
-                              │
-                    ┌─────────▼────────┐
-                    │ Similarity Engine│
-                    │ Cosine Similarity│
-                    └─────────┬────────┘
-                              │
-                    ┌─────────▼────────┐
-                    │ FastAPI Service  │
-                    └─────────┬────────┘
-                              │
-                    ┌─────────▼────────┐
-                    │ Docker Container │
-                    └──────────────────┘
-```
+<img width="1620" height="2224" alt="image" src="https://github.com/user-attachments/assets/04cbd4ae-b7a6-4082-99bc-8bd1d93dee9d" />
+
 
 ---
 
@@ -286,6 +251,7 @@ API documentation:
 ```text
 http://localhost:8000/docs
 ```
+<img width="1461" height="632" alt="image" src="https://github.com/user-attachments/assets/8ef8b0f9-50be-4d3e-8606-7413e9806f41" />
 
 ---
 
@@ -352,6 +318,11 @@ http://localhost:8000/docs
 # Optional Multimodal Similarity Extension
 
 As an optional enhancement, a multimodal similarity prototype was implemented.
+
+## Multimodal Retrieval Architecture
+
+<img width="1620" height="2224" alt="image" src="https://github.com/user-attachments/assets/b24d89a8-1f06-41ab-8f6e-320ee4524930" />
+
 
 ## Text Similarity
 
@@ -451,8 +422,16 @@ Potential future enhancements include:
 
 ---
 
+# Production Deployment Architecture (AWS)
+<img width="1486" height="1540" alt="image" src="https://github.com/user-attachments/assets/89f45932-c0da-468e-afc2-489e285f1129" />
+
+
+# Future GenAI Enhancements
+
+<img width="1860" height="1840" alt="image" src="https://github.com/user-attachments/assets/4ae41e23-1a2f-447e-b346-cb82db99b9f2" />
+
+
 # Author
 
 Ajay Singh
 
-SAP Senior Machine Learning Engineer Assessment
